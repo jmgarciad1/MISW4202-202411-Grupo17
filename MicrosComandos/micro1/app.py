@@ -25,10 +25,11 @@ def create_flask_app():
 
 def add_urls(app):
     api = Api(app)
-    api.add_resource(NotificacionFunction, '/notificacion', '/signin/<int:id_usuario>')
+    api.add_resource(NotificacionFunction, '/notificacion1', '/signin/<int:id_usuario>')
 
 
 
 if __name__ == '__main__':
     app = create_flask_app()
-    app.run()
+    port=5001
+    app.run(port=port)
