@@ -8,7 +8,7 @@ urls = [
     "http://127.0.0.1:5002/notificacion2",
     "http://127.0.0.1:5003/notificacion3",
 ]
-users = 5
+users = 100
 
 async def post_data(url):
     async with aiohttp.ClientSession() as session:
@@ -30,19 +30,25 @@ async def main():
 
     if all(response == responses[0] for response in responses):
         print("Todas las respuestas son iguales. Eligiendo la primera:", responses[0])
-        respuesta = "Todas las respuestas son iguales. Eligiendo la primera: " + str(responses[0])
+        respuesta = "si"
+        if responses[0]["mensajeTranpa"] == "false":
+            trampa = "no"
+        else:
+            trampa = "si"
     else:
         for response in responses:
             if responses.count(response) > 1:
                 print("Respuesta repetida:", response)
-                respuesta = "Se encontro inconsistencia y se toma: " + str(response)
+                respuesta = "no"
+                if response["mensajeTranpa"] == "true":
+                    trampa = "si"
+                else:
+                    trampa = "no"
                 break
 
     with open("data.csv", "a", newline="") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(["Fecha", "Respuesta", "respuesta elegida"])
-        for response in responses:
-            writer.writerow([datetime.now().isoformat(), response, respuesta])
+        writer.writerow([datetime.now().isoformat(),respuesta,trampa])
 
 n = 5  # Number of times to run the code block
 
